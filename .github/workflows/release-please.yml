@@ -44,7 +44,6 @@ jobs:
           git config user.name "github-actions[bot]"
 
           if [[ -n "$(git status --porcelain)" ]]; then
-            git reset --soft HEAD~1
             git add uv.lock
             git commit --amend --no-edit
             git push --force
