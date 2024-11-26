@@ -28,7 +28,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    if: ${{ !needs.release-please.outputs.releases_created }}
+    if: ${{ !needs.release-please.outputs.release_created }}
     steps:
       - uses: actions/checkout@v4
         with:
