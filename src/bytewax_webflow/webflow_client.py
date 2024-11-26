@@ -92,8 +92,8 @@ class WebflowClient:
 
     def insert_collection_items(
         self, collection_id: str, items: Sequence[WebflowCollectionItem]
-    ):
-        self._request(
+    ) -> Sequence[WebflowCollectionItem]:
+        response = self._request(
             "POST",
             f"collections/{collection_id}/items",
             data={
@@ -101,14 +101,29 @@ class WebflowClient:
             },
         )
 
+        return [self._parse_collection_item(i) for i in response["items"]]
+
     def update_collection_items(
         self, collection_id: str, items: Sequence[WebflowCollectionItem]
-    ):
-        self._request(
+    ) -> Sequence[WebflowCollectionItem]:
+        response = self._request(
             "POST",
             f"collections/{collection_id}/items",
             data={
                 "items": [self._serialize_collection_item(i) for i in items],
+            },
+        )
+
+        return [self._parse_collection_item(i) for i in response["items"]]
+
+    def publish_collection_items(
+        self, collection_id: str, items: Sequence[WebflowCollectionItem]
+    ):
+        self._request(
+            "POST",
+            f"collections/{collection_id}/items/publish",
+            data={
+                "itemIds": [i.id for i in items if i.id is not None],
             },
         )
 

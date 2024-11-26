@@ -88,15 +88,24 @@ class WebflowCollectionItemSinkPartition(StatelessSinkPartition[WebflowCollectio
             else:
                 inserts.append(item)
 
+        touched_items = []
+
         if len(inserts) > 0:
             logger.info(f"Inserted {len(inserts)} collection items")
 
-            self._client.insert_collection_items(self._collection_id, inserts)
+            touched_items += self._client.insert_collection_items(
+                self._collection_id, inserts
+            )
 
         if len(updates) > 0:
             logger.info(f"Updated {len(updates)} collection items")
 
-            self._client.update_collection_items(self._collection_id, updates)
+            touched_items += self._client.update_collection_items(
+                self._collection_id, updates
+            )
+
+        if self._is_publishing and len(touched_items) > 0:
+            self._client.publish_collection_items(self._collection_id, touched_items)
 
 
 class WebflowCollectionItemSink(DynamicSink[WebflowCollectionItem]):
