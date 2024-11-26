@@ -12,7 +12,8 @@ jobs:
       contents: write
       pull-requests: write
     outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
+      release_created: ${{ steps.release.outputs.releases_created }}
+      pr_created: ${{ steps.release.outputs.prs_created }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -28,7 +29,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    if: ${{ !needs.release-please.outputs.release_created }}
+    if: ${{ needs.release-please.outputs.pr_created }}
     steps:
       - uses: actions/checkout@v4
         with:
