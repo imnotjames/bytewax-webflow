@@ -1,7 +1,7 @@
 [project]
 name = "bytewax-webflow"
 version = "0.1.0"
-description = "Add your description here"
+description = "Webflow connectors for Bytewax"
 readme = "README.md"
 authors = [
     { name = "James Ward", email = "james@notjam.es" }
