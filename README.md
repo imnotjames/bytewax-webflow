@@ -1,4 +1,3 @@
-[![Actions Status](https://github.com/imnotjames/bytewax-webflow/actions/workflows/main.yml/badge.svg)](https://github.com/imnotjames/bytewax-webflow/actions/workflows/main.yml)
 [![PyPI](https://img.shields.io/pypi/v/bytewax-webflow.svg?style=flat-square)](https://pypi.org/project/bytewax-webflow/)
 
 
