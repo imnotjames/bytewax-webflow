@@ -3,7 +3,7 @@
 
 # Byteflow Webflow
 
-Webflow connectors for Bytewax.
+Webflow connectors for [Bytewax](https://bytewax.io).
 
 This connector offers 1 sink:
 
