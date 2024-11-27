@@ -3,7 +3,7 @@ from typing import Any
 
 
 @dataclass
-class WebflowCollectionItem:
+class CollectionItem:
     name: str
     slug: str
     is_archived: bool = False
@@ -13,7 +13,7 @@ class WebflowCollectionItem:
 
 
 @dataclass
-class WebflowCollectionField:
+class CollectionField:
     slug: str
     is_required: bool
     is_editable: bool

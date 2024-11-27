@@ -1,4 +1,4 @@
-from .collection_item_sink import WebflowCollectionItemSink
+from .collection_item_sink import CollectionItemSink
 
 
-__all__ = ("WebflowCollectionItemSink",)
+__all__ = ("CollectionItemSink",)

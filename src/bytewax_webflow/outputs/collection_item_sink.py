@@ -7,13 +7,13 @@ from bytewax.outputs import (
 )
 
 from ..webflow_client import WebflowClient
-from ..types import WebflowCollectionItem, WebflowCollectionField
+from ..types import CollectionItem, CollectionField
 
 
 logger = getLogger(__name__)
 
 
-class WebflowCollectionItemSinkPartition(StatelessSinkPartition[WebflowCollectionItem]):
+class CollectionItemSinkPartition(StatelessSinkPartition[CollectionItem]):
     def __init__(
         self,
         client: WebflowClient,
@@ -25,9 +25,7 @@ class WebflowCollectionItemSinkPartition(StatelessSinkPartition[WebflowCollectio
         self._is_publishing = is_publishing
 
     @staticmethod
-    def _is_valid(
-        schema: Sequence[WebflowCollectionField], value: WebflowCollectionItem
-    ):
+    def _is_valid(schema: Sequence[CollectionField], value: CollectionItem):
         valid_fields = set(
             [f.slug for f in schema if f.is_editable and f.slug not in ["slug", "name"]]
         )
@@ -55,7 +53,7 @@ class WebflowCollectionItemSinkPartition(StatelessSinkPartition[WebflowCollectio
 
         return True
 
-    def write_batch(self, items: Sequence[WebflowCollectionItem]) -> None:
+    def write_batch(self, items: Sequence[CollectionItem]) -> None:
         if len(items) == 0:
             return
 
@@ -108,7 +106,7 @@ class WebflowCollectionItemSinkPartition(StatelessSinkPartition[WebflowCollectio
             self._client.publish_collection_items(self._collection_id, touched_items)
 
 
-class WebflowCollectionItemSink(DynamicSink[WebflowCollectionItem]):
+class CollectionItemSink(DynamicSink[CollectionItem]):
     """Fixed partitioned sink for writing data to a Webflow Collection."""
 
     def __init__(
@@ -129,7 +127,7 @@ class WebflowCollectionItemSink(DynamicSink[WebflowCollectionItem]):
         step_id: str,
         worker_index: int,
         worker_count: int,
-    ) -> WebflowCollectionItemSinkPartition:
+    ) -> CollectionItemSinkPartition:
         """Build or resume a partition."""
         if worker_count != 1:
             raise ValueError("only supports 1 worker")
@@ -139,11 +137,11 @@ class WebflowCollectionItemSink(DynamicSink[WebflowCollectionItem]):
             base_url=self._base_url,
         )
 
-        return WebflowCollectionItemSinkPartition(
+        return CollectionItemSinkPartition(
             client=client,
             collection_id=self._collection_id,
             is_publishing=self._is_publishing,
         )
 
 
-__all__ = ("WebflowCollectionItemSinkPartition", "WebflowCollectionItemSink")
+__all__ = ("CollectionItemSinkPartition", "CollectionItemSink")

@@ -1,9 +1,9 @@
-from .outputs import WebflowCollectionItemSink
-from .types import WebflowCollectionItem, WebflowCollectionField
+from .outputs import CollectionItemSink
+from .types import CollectionItem, CollectionField
 
 
 __all__ = (
-    "WebflowCollectionItem",
-    "WebflowCollectionField",
-    "WebflowCollectionItemSink",
+    "CollectionItem",
+    "CollectionField",
+    "CollectionItemSink",
 )

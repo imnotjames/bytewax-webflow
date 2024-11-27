@@ -3,8 +3,7 @@ from urllib.parse import urljoin
 
 import requests
 
-from .types import WebflowCollectionItem, WebflowCollectionField
-
+from .types import CollectionItem, CollectionField
 
 DEFAULT_BASE_URL = "https://api.webflow.com/v2/"
 
@@ -35,13 +34,13 @@ class WebflowClient:
         return response.json()
 
     @staticmethod
-    def _parse_collection_item(data) -> WebflowCollectionItem:
+    def _parse_collection_item(data) -> CollectionItem:
         fields = data.get("fieldData") or {}
 
         name = fields.pop("name")
         slug = fields.pop("slug")
 
-        return WebflowCollectionItem(
+        return CollectionItem(
             id=data["id"],
             name=name,
             slug=slug,
@@ -51,7 +50,7 @@ class WebflowClient:
         )
 
     @staticmethod
-    def _serialize_collection_item(value: WebflowCollectionItem):
+    def _serialize_collection_item(value: CollectionItem):
         return {
             "id": value.id,
             "isArchived": value.is_archived,
@@ -63,9 +62,7 @@ class WebflowClient:
             },
         }
 
-    def get_item_by_slug(
-        self, collection_id: str, slug: str
-    ) -> WebflowCollectionItem | None:
+    def get_item_by_slug(self, collection_id: str, slug: str) -> CollectionItem | None:
         data = self._request(
             "GET", f"collections/{collection_id}/items", params={"slug": slug}
         )
@@ -76,23 +73,21 @@ class WebflowClient:
         return self._parse_collection_item(data["items"][0])
 
     @staticmethod
-    def _parse_collection_field(data) -> WebflowCollectionField:
-        return WebflowCollectionField(
+    def _parse_collection_field(data) -> CollectionField:
+        return CollectionField(
             slug=data["slug"],
             is_required=data["isRequired"],
             is_editable=data["isEditable"],
         )
 
-    def get_collection_schema(
-        self, collection_id: str
-    ) -> Sequence[WebflowCollectionField]:
+    def get_collection_schema(self, collection_id: str) -> Sequence[CollectionField]:
         collection = self._request("GET", f"collections/{collection_id}")
 
         return [self._parse_collection_field(f) for f in collection["fields"]]
 
     def insert_collection_items(
-        self, collection_id: str, items: Sequence[WebflowCollectionItem]
-    ) -> Sequence[WebflowCollectionItem]:
+        self, collection_id: str, items: Sequence[CollectionItem]
+    ) -> Sequence[CollectionItem]:
         response = self._request(
             "POST",
             f"collections/{collection_id}/items",
@@ -104,8 +99,8 @@ class WebflowClient:
         return [self._parse_collection_item(i) for i in response["items"]]
 
     def update_collection_items(
-        self, collection_id: str, items: Sequence[WebflowCollectionItem]
-    ) -> Sequence[WebflowCollectionItem]:
+        self, collection_id: str, items: Sequence[CollectionItem]
+    ) -> Sequence[CollectionItem]:
         response = self._request(
             "POST",
             f"collections/{collection_id}/items",
@@ -117,7 +112,7 @@ class WebflowClient:
         return [self._parse_collection_item(i) for i in response["items"]]
 
     def publish_collection_items(
-        self, collection_id: str, items: Sequence[WebflowCollectionItem]
+        self, collection_id: str, items: Sequence[CollectionItem]
     ):
         self._request(
             "POST",
