@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/imnotjames/bytewax-webflow/compare/v0.2.0...v0.3.0) (2024-11-27)
+
+
+### Features
+
+* drop `webflow` prefix from classes ([7b07ec5](https://github.com/imnotjames/bytewax-webflow/commit/7b07ec5866ca462c78c6a67f0025c8b2deae05da))
+
+
+### Documentation
+
+* link to bytewax ([408fcfc](https://github.com/imnotjames/bytewax-webflow/commit/408fcfcf37dbd48a9351988ddbb68aa899a3985d))
+
 ## [0.2.0](https://github.com/imnotjames/bytewax-webflow/compare/v0.1.1...v0.2.0) (2024-11-26)
 
 
