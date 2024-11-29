@@ -102,7 +102,7 @@ class WebflowClient:
         self, collection_id: str, items: Sequence[CollectionItem]
     ) -> Sequence[CollectionItem]:
         response = self._request(
-            "POST",
+            "PATCH",
             f"collections/{collection_id}/items",
             data={
                 "items": [self._serialize_collection_item(i) for i in items],
