@@ -1,6 +1,6 @@
 [project]
 name = "bytewax-webflow"
-version = "0.3.0"
+version = "0.3.1"
 description = "Webflow connectors for Bytewax"
 readme = "README.md"
 authors = [

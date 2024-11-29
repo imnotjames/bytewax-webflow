@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/imnotjames/bytewax-webflow/compare/v0.3.0...v0.3.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* actually update collection items instead of always creating new items ([45a86b4](https://github.com/imnotjames/bytewax-webflow/commit/45a86b40285c1572e77e8284222068f46dfff637))
+
 ## [0.3.0](https://github.com/imnotjames/bytewax-webflow/compare/v0.2.0...v0.3.0) (2024-11-27)
 
 
