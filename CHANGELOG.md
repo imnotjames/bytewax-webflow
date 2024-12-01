@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/imnotjames/bytewax-webflow/compare/v0.3.1...v0.3.2) (2024-12-01)
+
+
+### Bug Fixes
+
+* don't publish (and thus un-draft) draft items ([0c1d9d8](https://github.com/imnotjames/bytewax-webflow/commit/0c1d9d8dfc3bd54feb1b347b1bc656c64f774fa4))
+
 ## [0.3.1](https://github.com/imnotjames/bytewax-webflow/compare/v0.3.0...v0.3.1) (2024-11-29)
 
 
