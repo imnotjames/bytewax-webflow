@@ -59,8 +59,8 @@ class CollectionItemSinkPartition(StatelessSinkPartition[CollectionItem]):
 
         schema = self._client.get_collection_schema(self._collection_id)
 
-        inserts = []
-        updates = []
+        inserts: list[CollectionItem] = []
+        updates: list[CollectionItem] = []
 
         for item in items:
             if not self._is_valid(schema, item):
@@ -103,7 +103,16 @@ class CollectionItemSinkPartition(StatelessSinkPartition[CollectionItem]):
             )
 
         if self._is_publishing and len(touched_items) > 0:
-            self._client.publish_collection_items(self._collection_id, touched_items)
+            # Only publish collection items that aren't draft - the publish
+            # endpoint will change the state of draft items to published
+            # even if it's not what we want
+            publish_items = [item for item in touched_items if not item.is_draft]
+            self._client.publish_collection_items(self._collection_id, publish_items)
+
+            # And un-publish items that should be draft now
+            draft_items = [item for item in touched_items if item.is_draft]
+            for item in draft_items:
+                self._client.unpublish_collection_item(self._collection_id, item)
 
 
 class CollectionItemSink(DynamicSink[CollectionItem]):

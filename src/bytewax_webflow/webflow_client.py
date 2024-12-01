@@ -118,9 +118,16 @@ class WebflowClient:
             "POST",
             f"collections/{collection_id}/items/publish",
             data={
-                "itemIds": [i.id for i in items if i.id is not None],
+                "itemIds": [
+                    i.id for i in items if i.id is not None
+                ],
             },
         )
 
+    def unpublish_collection_item(self, collection_id: str, item: CollectionItem):
+        self._request(
+            "DELETE",
+            f"collections/{collection_id}/items/{item.id}/live"
+        )
 
 __all__ = ("WebflowClient",)
