@@ -8,6 +8,15 @@ from .types import CollectionItem, CollectionField
 DEFAULT_BASE_URL = "https://api.webflow.com/v2/"
 
 
+class WebflowClientError(ValueError):
+    def __init__(self, method: str, path: str, status_code: int, text: str):
+        super().__init__(f"Unable to {method} {path}: {status_code} {text}")
+        self.method = method
+        self.path = path
+        self.status_code = status_code
+        self.text = text
+
+
 class WebflowClient:
     def __init__(self, access_token: str, base_url: str | None = None):
         self._access_token = access_token
@@ -27,9 +36,7 @@ class WebflowClient:
         )
 
         if not response.ok:
-            raise ValueError(
-                f"Unable to {method} {path}: {response.status_code} {response.text}"
-            )
+            raise WebflowClientError(method, path, response.status_code, response.text)
 
         return response.json()
 
@@ -118,16 +125,18 @@ class WebflowClient:
             "POST",
             f"collections/{collection_id}/items/publish",
             data={
-                "itemIds": [
-                    i.id for i in items if i.id is not None
-                ],
+                "itemIds": [i.id for i in items if i.id is not None],
             },
         )
 
     def unpublish_collection_item(self, collection_id: str, item: CollectionItem):
-        self._request(
-            "DELETE",
-            f"collections/{collection_id}/items/{item.id}/live"
-        )
+        try:
+            self._request("DELETE", f"collections/{collection_id}/items/{item.id}/live")
+        except WebflowClientError as e:
+            if e.status_code != 404:
+                # If this is anything other than a 404 it's a real error
+                # but if it's a 404 it just means we've already un-published
+                raise
+
 
 __all__ = ("WebflowClient",)
