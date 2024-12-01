@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/imnotjames/bytewax-webflow/compare/v0.3.2...v0.3.3) (2024-12-01)
+
+
+### Bug Fixes
+
+* handle un-publish of already unpublished item ([a5f4432](https://github.com/imnotjames/bytewax-webflow/commit/a5f4432cbbe1148ca6ccacc1faaa1d2ba1244534))
+
 ## [0.3.2](https://github.com/imnotjames/bytewax-webflow/compare/v0.3.1...v0.3.2) (2024-12-01)
 
 
