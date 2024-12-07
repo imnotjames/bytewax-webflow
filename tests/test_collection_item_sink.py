@@ -2,13 +2,13 @@ import pytest
 from pytest_mock import MockType, MockerFixture
 
 from bytewax_webflow.outputs.collection_item_sink import (
-    WebflowCollectionItemSinkPartition,
+    CollectionItemSinkPartition,
 )
-from bytewax_webflow.types import WebflowCollectionItem, WebflowCollectionField
+from bytewax_webflow.types import CollectionItem, CollectionField
 from bytewax_webflow.webflow_client import WebflowClient
 
 
-class TestWebflowCollectionItemSinkPartition:
+class TestCollectionItemSinkPartition:
     @pytest.fixture
     def mock_client(self, mocker: MockerFixture):
         mock = mocker.create_autospec(spec=WebflowClient)
@@ -16,17 +16,17 @@ class TestWebflowCollectionItemSinkPartition:
         mock.get_item_by_slug.return_value = None
 
         mock.get_collection_schema.return_value = [
-            WebflowCollectionField(
+            CollectionField(
                 slug="example",
                 is_required=False,
                 is_editable=True,
             ),
-            WebflowCollectionField(
+            CollectionField(
                 slug="example-two",
                 is_required=True,
                 is_editable=True,
             ),
-            WebflowCollectionField(
+            CollectionField(
                 slug="example-three",
                 is_required=False,
                 is_editable=False,
@@ -36,11 +36,9 @@ class TestWebflowCollectionItemSinkPartition:
         yield mock
 
     def test_inserts_valid_records_no_slug(self, mock_client: MockType):
-        partition = WebflowCollectionItemSinkPartition(
-            mock_client, "example-collection"
-        )
+        partition = CollectionItemSinkPartition(mock_client, "example-collection")
 
-        input_item = WebflowCollectionItem(
+        input_item = CollectionItem(
             name="Example",
             slug="example",
             fields={
@@ -57,11 +55,9 @@ class TestWebflowCollectionItemSinkPartition:
         mock_client.update_collection_items.assert_not_called()
 
     def test_updates_records_with_id(self, mock_client: MockType):
-        partition = WebflowCollectionItemSinkPartition(
-            mock_client, "example-collection"
-        )
+        partition = CollectionItemSinkPartition(mock_client, "example-collection")
 
-        input_item = WebflowCollectionItem(
+        input_item = CollectionItem(
             id="example-id",
             name="Example",
             slug="example",
@@ -79,11 +75,9 @@ class TestWebflowCollectionItemSinkPartition:
         )
 
     def test_updates_records_when_slug_overlaps(self, mock_client: MockType):
-        partition = WebflowCollectionItemSinkPartition(
-            mock_client, "example-collection"
-        )
+        partition = CollectionItemSinkPartition(mock_client, "example-collection")
 
-        from_slug_item = WebflowCollectionItem(
+        from_slug_item = CollectionItem(
             id="example-id",
             name="Example",
             slug="example",
@@ -93,7 +87,7 @@ class TestWebflowCollectionItemSinkPartition:
             },
         )
 
-        input_item = WebflowCollectionItem(
+        input_item = CollectionItem(
             name="Example",
             slug="example",
             fields={
@@ -102,7 +96,7 @@ class TestWebflowCollectionItemSinkPartition:
             },
         )
 
-        expected = WebflowCollectionItem(
+        expected = CollectionItem(
             id="example-id",
             name="Example",
             slug="example",
@@ -122,11 +116,9 @@ class TestWebflowCollectionItemSinkPartition:
         )
 
     def test_ignores_records_with_invalid_keys(self, mock_client: MockType):
-        partition = WebflowCollectionItemSinkPartition(
-            mock_client, "example-collection"
-        )
+        partition = CollectionItemSinkPartition(mock_client, "example-collection")
 
-        input_item = WebflowCollectionItem(
+        input_item = CollectionItem(
             name="Example",
             slug="example",
             fields={
@@ -142,11 +134,9 @@ class TestWebflowCollectionItemSinkPartition:
         mock_client.update_collection_items.assert_not_called()
 
     def test_ignores_records_with_missing_required_keys(self, mock_client: MockType):
-        partition = WebflowCollectionItemSinkPartition(
-            mock_client, "example-collection"
-        )
+        partition = CollectionItemSinkPartition(mock_client, "example-collection")
 
-        input_item = WebflowCollectionItem(
+        input_item = CollectionItem(
             name="Example",
             slug="example",
             fields={
@@ -160,11 +150,9 @@ class TestWebflowCollectionItemSinkPartition:
         mock_client.update_collection_items.assert_not_called()
 
     def test_ignores_records_with_uneditable_keys(self, mock_client: MockType):
-        partition = WebflowCollectionItemSinkPartition(
-            mock_client, "example-collection"
-        )
+        partition = CollectionItemSinkPartition(mock_client, "example-collection")
 
-        input_item = WebflowCollectionItem(
+        input_item = CollectionItem(
             name="Example",
             slug="example",
             fields={
